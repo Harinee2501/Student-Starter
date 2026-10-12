@@ -197,6 +197,52 @@ class RegistrationServiceTest {
         assertEquals(4, student.getTotalCredits());
         assertEquals(2, course.getCurrentEnrollment());
     }
+    
+    @Test
+    void shouldAllowRegistrationForFifthCourse() {
+        Student student = new Student("S301", "Ravi");
+
+        for (int i = 1; i <= 4; i++) {
+            student.addRegistration("CS" + i, 2);
+        }
+
+        Course course = new Course(
+                "CS505", "Operating Systems", 2, 30, true, null
+        );
+
+        RegistrationService service = new RegistrationService();
+
+        boolean result = service.register(student, course);
+
+        assertTrue(result);
+        assertEquals(5, student.getRegisteredCourses().size());
+        assertEquals(10, student.getTotalCredits());
+        assertEquals(1, course.getCurrentEnrollment());
+    }
+
+    @Test
+    void shouldRejectRegistrationForSixthCourse() {
+        Student student = new Student("S302", "Meena");
+
+        for (int i = 1; i <= 5; i++) {
+            student.addRegistration("CS" + i, 2);
+        }
+
+        Course course = new Course(
+                "CS506", "Computer Networks", 2, 30, true, null
+        );
+
+        RegistrationService service = new RegistrationService();
+
+        boolean result = service.register(student, course);
+
+        assertFalse(result);
+        assertEquals(5, student.getRegisteredCourses().size());
+        assertEquals(10, student.getTotalCredits());
+        assertFalse(student.isRegistered("CS506"));
+        assertEquals(0, course.getCurrentEnrollment());
+    }
+
 
     
 }
