@@ -44,3 +44,18 @@ The packaged JAR is located at:
 JUnit XML reports are generated under:
 
 `course-registration-app/target/surefire-reports/`
+
+## Jenkins Declarative Pipeline
+
+The `Jenkinsfile` is located at the repository root and targets a Windows Jenkins agent using `bat` steps. Maven commands execute from the repository root.
+
+### Pipeline Stages
+
+1. **Build and Test:** Runs `mvn clean test`.
+2. **Package:** Runs `mvn package` only if the build and test stage succeeds.
+3. **Publish Test Reports:** Publishes JUnit XML reports from `course-registration-app/target/surefire-reports/TEST-*.xml`.
+4. **Archive Artifact:** Archives `course-registration-app/target/*.jar` only when the pipeline succeeds.
+
+If the build or tests fail, the pipeline does not proceed to packaging or archive the JAR. The `post` section publishes available test reports and prints a failure message.
+
+**Execution status:** The Jenkinsfile has been committed, but a live Jenkins execution has not been performed. The Maven build and test commands were verified locally.
