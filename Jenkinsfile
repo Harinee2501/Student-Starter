@@ -6,14 +6,14 @@ pipeline {
         stage('Build and Test') {
             steps {
                 echo 'Building and testing the Course Registration application'
-                bat 'mvn clean test'
+                sh 'mvn clean test'
             }
         }
 
         stage('Package') {
             steps {
                 echo 'Packaging the application'
-                bat 'mvn package'
+                sh 'mvn package'
             }
         }
     }
